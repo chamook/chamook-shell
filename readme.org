@@ -1,0 +1,3 @@
+#+title: chamook-shell
+
+My personal config for [[https://quickshell.org][Quickshell]]
