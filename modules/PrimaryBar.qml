@@ -72,29 +72,10 @@ PanelWindow {
         }
 
         // --- window title ---
-        ColumnLayout {
-            id: windowTitleLayout
-            Layout.alignment: Qt.AlignCenter
+        WindowTitle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.top: parent.top
             anchors.centerIn: parent
-            spacing: 0
-
-            Text {
-                text: FocusedWindowService.focusedWindowTitle || ""
-                color: "white"
-                Layout.alignment: Qt.AlignCenter
-                font.family: "IBM Plex Sans"
-                font.bold: true
-                font.pixelSize: 16
-            }
-            Text {
-                text: FocusedWindowService.focusedAppName || ""
-                color: "#cccccc"
-                Layout.alignment: Qt.AlignCenter
-                font.family: "IBM Plex Sans"
-                font.pixelSize: 16
-            }
         }
 
         // --- system tray ---
