@@ -1,9 +1,14 @@
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
+import "../services"
 
 PanelWindow {
     property var modelData
     screen: modelData
+    implicitHeight: NiriWorkspaceService.inOverview ? 0 : 30
+    color: "transparent"
+    WlrLayershell.exclusiveZone: NiriWorkspaceService.inOverview ? -1 : 30
 
     anchors {
         left: true
@@ -15,9 +20,6 @@ PanelWindow {
         left: 40
         right: 40
     }
-
-    implicitHeight: 30
-    color: "transparent"
 
     Rectangle {
         anchors.fill: parent

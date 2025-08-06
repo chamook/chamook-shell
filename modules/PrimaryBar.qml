@@ -1,6 +1,7 @@
 import Quickshell // for PanelWindow
 import Quickshell.Io
 import Quickshell.Services.SystemTray
+import Quickshell.Wayland
 import QtQuick // for Text
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -11,11 +12,15 @@ import "../utils"
 
 PanelWindow {
     property var primaryScreenName: "DP-1"
-
     property var modelData
-    screen: modelData
 
+    id: topBar
+    screen: modelData
     color: "transparent"
+    WlrLayershell.exclusiveZone: topBarStates.state == "overview" ? -1 : 60
+    WlrLayershell.layer: topBarStates.state == "overview" ? WlrLayer.Top : WlrLayer.Bottom
+    implicitHeight: 400
+
     anchors {
         top: true
         left: true
@@ -28,12 +33,71 @@ PanelWindow {
         top: 10
     }
 
-    implicitHeight: 60
+    StateGroup {
+        id: topBarStates
+
+        states: [
+            State {
+                name: "normal"
+            },
+            State {
+                name: "overview"
+            }
+        ]
+
+        transitions: [
+            Transition {
+                to: "overview"
+                SequentialAnimation {
+                    PropertyAction {
+                        target: normalBar
+                        property: "y"
+                        value: -100
+                    }
+                    PropertyAction {
+                        target: overviewBar
+                        property: "y"
+                        value: 0
+                    }
+                }
+            },
+            Transition {
+                to: "normal"
+                SequentialAnimation {
+                    PropertyAction {
+                        target: normalBar
+                        property: "y"
+                        value: 0
+                    }
+                    PropertyAction {
+                        target: overviewBar
+                        property: "y"
+                        value: -500
+                    }
+                }
+            }
+        ]
+    }
+
+    Connections {
+        target: NiriWorkspaceService
+        function onInOverviewChanged() {
+            if (NiriWorkspaceService.inOverview) {
+                topBarStates.state = "overview"
+            }
+            else {
+                topBarStates.state = "normal"
+            }
+        }
+    }
 
     Rectangle {
-        anchors.fill: parent
+        id: normalBar
+        width: parent.width
         radius: 10
         color: "#121212"
+        implicitHeight: 60
+        visible: !NiriWorkspaceService.inOverview
 
         // --- media player ---
         MediaPlayer {
@@ -117,5 +181,23 @@ PanelWindow {
                 command: ["wlogout", "-b 5"]
             }
         }
-      }
+    }
+
+    Rectangle {
+        id: overviewBar
+        width: parent.width
+        color: "transparent"
+        anchors.top: parent.top
+        implicitHeight: 400
+        visible: NiriWorkspaceService.inOverview
+
+        BigMediaPlayer {
+            anchors.left: parent.left
+            visible: modelData.name == primaryScreenName
+        }
+        BigFuzzyClock {
+            anchors.right: parent.right
+            visible: modelData.name == primaryScreenName
+        }
+    }
 }
