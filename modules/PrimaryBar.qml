@@ -48,32 +48,18 @@ PanelWindow {
         transitions: [
             Transition {
                 to: "overview"
-                SequentialAnimation {
-                    PropertyAction {
-                        target: normalBar
-                        property: "y"
-                        value: -100
-                    }
-                    PropertyAction {
-                        target: overviewBar
-                        property: "y"
-                        value: 0
-                    }
+                ScaleAnimator {
+                    target: overviewBar
+                    from: 1.2
+                    to: 1
                 }
             },
             Transition {
                 to: "normal"
-                SequentialAnimation {
-                    PropertyAction {
-                        target: normalBar
-                        property: "y"
-                        value: 0
-                    }
-                    PropertyAction {
-                        target: overviewBar
-                        property: "y"
-                        value: -500
-                    }
+                YAnimator {
+                    target: normalBar
+                    from: -100
+                    to: 0
                 }
             }
         ]
