@@ -26,6 +26,7 @@ Rectangle {
             height: albumArt.height || 250
             Layout.leftMargin: 20
             Layout.alignment: Qt.AlignLeft
+            visible: MprisController.activePlayer?.isPlaying || false
 
             Image {
                 id: albumArt
