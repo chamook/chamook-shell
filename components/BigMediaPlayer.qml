@@ -59,9 +59,41 @@ Rectangle {
                 font.pixelSize: 20
                 Layout.fillWidth: true
             }
+
+            Rectangle {
+                id: spacer
+                color: "transparent"
+                height: 90
+            }
+
+            Button {
+                id: pauseButton
+                width: 60
+                height: 60
+                icon.width: 60
+                icon.height: 60
+                icon.source: "../assets/pause.svg"
+                icon.cache: false
+                flat: true
+                visible: MprisController.activePlayer?.isPlaying || false
+                display: AbstractButton.IconOnly
+                onClicked: MprisController.activePlayer?.togglePlaying()
+            }
+
+            Button {
+                width: 60
+                height: 60
+                icon.width: 60
+                icon.height: 60
+                icon.source: "../assets/play.svg"
+                icon.cache: false
+                flat: true
+                visible: MprisController.activePlayer != null && !(MprisController.activePlayer.isPlaying)
+                display: AbstractButton.IconOnly
+                onClicked: MprisController.activePlayer?.togglePlaying()
+            }
         }
     }
-
 
     Shape {
         id: playIndicator
