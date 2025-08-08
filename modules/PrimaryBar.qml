@@ -164,7 +164,7 @@ PanelWindow {
 
             Process {
                 id: powerButtonProc
-                command: ["wlogout", "-b 5"]
+                command: ["sh", "-c", "qs ipc call power menu"]
             }
         }
     }

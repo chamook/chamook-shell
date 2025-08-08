@@ -24,4 +24,5 @@ ShellRoot {
 
     Volume {}
     Launcher {}
+    PowerMenu {}
 }
