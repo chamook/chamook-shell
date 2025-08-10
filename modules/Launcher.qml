@@ -99,11 +99,57 @@ PanelWindow {
 
 
     Rectangle {
+        id: launcherContent
         anchors.fill: parent
         anchors.topMargin: 100
         radius: 20
         color: "#121212"
 
+        StateGroup {
+            id: launcherContentStates
+
+            states: [
+                State {
+                    name: "apps"
+                },
+                State {
+                    name: "zen"
+                }
+            ]
+
+            transitions: [
+                Transition {
+                    to: "zen"
+                    SequentialAnimation {
+                        PropertyAction {
+                            target: launcherApps
+                            property: "visible"
+                            value: false
+                        }
+                        PropertyAction {
+                            target: launcherZen
+                            property: "visible"
+                            value: true
+                        }
+                    }
+                },
+                Transition {
+                    to: "apps"
+                    SequentialAnimation {
+                        PropertyAction {
+                            target: launcherApps
+                            property: "visible"
+                            value: true
+                        }
+                        PropertyAction {
+                            target: launcherZen
+                            property: "visible"
+                            value: false
+                        }
+                    }
+                }
+            ]
+        }
 
         ColumnLayout {
             anchors.margins: 40
@@ -162,6 +208,12 @@ PanelWindow {
                             quitLauncher();
                             return;
                         default:
+                            if (searchInput.displayText == "") {
+                                launcherContentStates.state = "zen"
+                            }
+                            else {
+                                launcherContentStates.state = "apps"
+                            }
                             searchApps();
                             break;
                         }
@@ -208,6 +260,25 @@ PanelWindow {
                     }
 
             }
+
+            Rectangle {
+                id: launcherZen
+                Layout.leftMargin: 40
+                Layout.rightMargin: 40
+                Layout.topMargin: 50
+                width: 1105
+                height: 400
+                color: "transparent"
+
+                Text {
+                    text: "Хотели как лучше, а получилось как всегда"
+                    color: "#999999"
+                    font.family: "IBM Plex Sans"
+                    font.pixelSize: 30
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                }
+            }
         }
 
     }
@@ -218,6 +289,7 @@ PanelWindow {
         function toggle(): void {
             if (!launcher.visible) {
                 launcherStates.state = "showing"
+                launcherContentStates.state = "zen"
             }
             else {
                 launcherStates.state = "hidden"
