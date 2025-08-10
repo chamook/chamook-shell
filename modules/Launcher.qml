@@ -25,10 +25,6 @@ PanelWindow {
         bottom: true
     }
 
-    margins {
-        bottom: 20
-    }
-
     StateGroup {
         id: launcherStates
 
@@ -102,7 +98,8 @@ PanelWindow {
         id: launcherContent
         anchors.fill: parent
         anchors.topMargin: 100
-        radius: 20
+        topLeftRadius: 20
+        topRightRadius: 20
         color: "#121212"
 
         StateGroup {
