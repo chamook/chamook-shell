@@ -31,7 +31,6 @@ Rectangle {
             Image {
                 id: albumArt
                 source: MprisController.activePlayer?.trackArtUrl || ""
-                sourceSize.width: 250
                 sourceSize.height: 250
                 fillMode: Image.PreserveAspectFit
             }
